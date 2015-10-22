@@ -18,10 +18,12 @@ def manhattan(rating1, rating2):
        Zwróć -1, gdy zbiory nie mają wspólnych elementów"""
     try:
         odl = 0
+        p = 0
         for i in users[rating1]:
             if i in users[rating2]:
                 odl += abs(users[rating1][i]-users[rating2][i])
-        if odl == 0:
+                p = 1
+        if p != 1:
             odl = -1
         return odl
     except KeyError:
@@ -33,9 +35,10 @@ def computeNearestNeighbor(username, users):
     distances = []
     if username in users:
         for i in users:
-            if i != username:
+            if i != username and manhattan(username,i) != -1:
                 distances.append((manhattan(username, i),i))
-        nameOfNearestNeighbor = sorted(distances)[0][1]
+        if distances != []:
+            nameOfNearestNeighbor = sorted(distances)[0][1]
         return nameOfNearestNeighbor
     else:
         print u"Błędne dane."
@@ -47,10 +50,12 @@ def recommend(username, users):
     recommendations = []
     # zarekomenduj użytkownikowi wykonawcę, którego jeszcze nie ocenił, a zrobił to jego najbliższy sąsiad
     try:
-        for i in users[nearest]:
-            if i not in users[username]:
-                recommendations.append((i, users[nearest][i]))
-        return sorted(recommendations, key=lambda artistTuple: artistTuple[1], reverse = True)
+        print nearest
+        if nearest !="":
+            for i in users[nearest]:
+                if i not in users[username]:
+                    recommendations.append((i, users[nearest][i]))
+            return sorted(recommendations, key=lambda artistTuple: artistTuple[1], reverse = True)
     except KeyError:
         pass
     
