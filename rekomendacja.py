@@ -50,7 +50,6 @@ def recommend(username, users):
     recommendations = []
     # zarekomenduj użytkownikowi wykonawcę, którego jeszcze nie ocenił, a zrobił to jego najbliższy sąsiad
     try:
-        print nearest
         if nearest !="":
             for i in users[nearest]:
                 if i not in users[username]:
