@@ -1,5 +1,4 @@
-﻿#  W    zorowane na przykładzie Rona Zacharskiego
-
+﻿#  Wzorowane na przykładzie Rona Zacharskiego
 
 from math import sqrt
 
@@ -13,36 +12,48 @@ users = {"Ania": {"Blues Traveler": 3.5, "Broken Bells": 2.0, "Norah Jones": 4.5
          "Hela": {"Blues Traveler": 3.0, "Norah Jones": 5.0, "Phoenix": 4.0, "Slightly Stoopid": 2.5, "The Strokes": 3.0}
         }
 
-
-
 def manhattan(rating1, rating2):
     """Oblicz odległość w metryce taksówkowej między dwoma  zbiorami ocen
        danymi w postaci: {'The Strokes': 3.0, 'Slightly Stoopid': 2.5}
        Zwróć -1, gdy zbiory nie mają wspólnych elementów"""
-       
-    # TODO: wpisz kod
-    pass
-
+    try:
+        odl = 0
+        for i in users[rating1]:
+            if i in users[rating2]:
+                odl += abs(users[rating1][i]-users[rating2][i])
+        if odl == 0:
+            odl = -1
+        return odl
+    except KeyError:
+        print u"Błędne dane."
 
 def computeNearestNeighbor(username, users):
     """dla danego użytkownika username, zwróć ze słownika users nazwę użytkownika o najbliższych preferencjach"""
     nameOfNearestNeighbor = ""
     distances = []
-    # TODO: wpisz kod
-    return nameOfNearestNeighbor
+    if username in users:
+        for i in users:
+            if i != username:
+                distances.append((manhattan(username, i),i))
+        nameOfNearestNeighbor = sorted(distances)[0][1]
+        return nameOfNearestNeighbor
+    else:
+        print u"Błędne dane."
 
 def recommend(username, users):
     """Zwróć listę rekomendacji dla użytkownika"""
     # znajdź preferencje najbliższego sąsiada
     nearest = computeNearestNeighbor(username, users)
-    
     recommendations = []
     # zarekomenduj użytkownikowi wykonawcę, którego jeszcze nie ocenił, a zrobił to jego najbliższy sąsiad
-    # TODO: wpisz kod
+    try:
+        for i in users[nearest]:
+            if i not in users[username]:
+                recommendations.append((i, users[nearest][i]))
+        return sorted(recommendations, key=lambda artistTuple: artistTuple[1], reverse = True)
+    except KeyError:
+        pass
     
-    return sorted(recommendations, key=lambda artistTuple: artistTuple[1], reverse = True)
-
-# przykłady
-
-print( recommend('Hela', users))
-#print( recommend('Celina', users))
+##przykłady
+##print( recommend('Hela', users))
+##print( recommend('Celina', users))
